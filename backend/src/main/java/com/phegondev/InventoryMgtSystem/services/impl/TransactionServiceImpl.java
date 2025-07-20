@@ -104,7 +104,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         //create a transaction
         Transaction transaction = Transaction.builder()
-                .transactionType(TransactionType.SALE)
+                .transactionType(TransactionType.CONSUMPTION)
                 .status(TransactionStatus.COMPLETED)
                 .product(product)
                 .user(user)
@@ -117,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transaction);
         return Response.builder()
                 .status(200)
-                .message("Product Sale successfully made")
+                .message("Consommation enregistrée")
                 .build();
 
 
