@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     // ✅ Chemin vers le dossier "public/uploads/products" de ton projet React
-    private static final String IMAGE_DIRECTORY_2 = "C:/Users/Latitude/Desktop/IMS-react-master/frontend/public/uploads/products/";
+    private static final String IMAGE_DIRECTORY_2 = "C:/Users/Latitude/Desktop/gestion de stock/frontend/public/uploads/products/";
 
     @Override
     public Response saveProduct(ProductDTO productDTO, MultipartFile imageFile) {
