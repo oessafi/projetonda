@@ -49,7 +49,7 @@ const Sidebar = () => {
         {/* Accès pour MAGASINIER */}
         {isMagasinier && (
           <>
-            <li><Link to="/sell">Consommation</Link></li>
+            <li><Link to="/Consumption">Consommation</Link></li>
    <li><Link to="/product">Produits</Link></li>
             <li><Link to="/category">Catégories</Link></li>
             <li>
