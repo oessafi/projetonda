@@ -15,8 +15,14 @@ const LoginPage = () => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
+  const showMessage = (msg) => {
+    setMessage(msg);
+    setTimeout(() => setMessage(""), 4000);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
     if (!validateEmail(email)) {
       showMessage("Adresse e-mail invalide.");
       return;
@@ -35,7 +41,19 @@ const LoginPage = () => {
         ApiService.saveToken(res.token);
         ApiService.saveRole(res.role);
         setMessage("Connexion réussie !");
-        navigate("/dashboard");
+
+        // Redirection selon rôle
+        if (res.role === "ADMIN") {
+          navigate("/dashboard");
+        } else if (res.role === "ACHETEUR") {
+          navigate("/supplier");
+        } else if (res.role === "MAGASINIER") {
+          navigate("/Consumption");
+        } else {
+          navigate("/login");
+        }
+      } else {
+        showMessage("Erreur lors de la connexion.");
       }
     } catch (error) {
       showMessage(
@@ -46,14 +64,15 @@ const LoginPage = () => {
     }
   };
 
-  const showMessage = (msg) => {
-    setMessage(msg);
-    setTimeout(() => setMessage(""), 4000);
-  };
-
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "100vh", backgroundColor: "#f0f2f5" }}>
-      <div className="card shadow-lg p-4" style={{ width: "100%", maxWidth: "400px", borderRadius: "20px" }}>
+    <div
+      className="container d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh", backgroundColor: "#f0f2f5" }}
+    >
+      <div
+        className="card shadow-lg p-4"
+        style={{ width: "100%", maxWidth: "400px", borderRadius: "20px" }}
+      >
         <h3 className="text-center mb-4">Connexion</h3>
 
         {message && (
@@ -63,11 +82,12 @@ const LoginPage = () => {
         )}
 
         <form onSubmit={handleLogin}>
-
           <div className="mb-3">
             <label className="form-label">Adresse e-mail</label>
             <div className="input-group">
-              <span className="input-group-text"><Mail size={16} /></span>
+              <span className="input-group-text">
+                <Mail size={16} />
+              </span>
               <input
                 type="email"
                 className="form-control"
@@ -82,7 +102,9 @@ const LoginPage = () => {
           <div className="mb-3">
             <label className="form-label">Mot de passe</label>
             <div className="input-group">
-              <span className="input-group-text"><Lock size={16} /></span>
+              <span className="input-group-text">
+                <Lock size={16} />
+              </span>
               <input
                 type="password"
                 className="form-control"
@@ -95,9 +117,17 @@ const LoginPage = () => {
           </div>
 
           <div className="d-grid mt-4">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
               {loading ? (
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
               ) : null}
               Se connecter
             </button>
@@ -105,7 +135,10 @@ const LoginPage = () => {
         </form>
 
         <p className="text-center mt-3">
-          Vous n’avez pas de compte ? <a href="/register" className="text-decoration-none">Créer un compte</a>
+          Vous n’avez pas de compte ?{" "}
+          <a href="/register" className="text-decoration-none">
+            Créer un compte
+          </a>
         </p>
       </div>
     </div>
