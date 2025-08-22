@@ -2,23 +2,23 @@ import React, { useEffect, useState } from "react";
 import Layout from "../component/Layout";
 import ApiService from "../service/ApiService";
 
-const DemandesTraiteesPage = () => {
+const DemandesNonTraiteesPage = () => {
   const [demandes, setDemandes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetchDemandesTraitees();
+    fetchDemandesNonTraitees();
   }, []);
 
-  const fetchDemandesTraitees = async () => {
+  const fetchDemandesNonTraitees = async () => {
     try {
-      const response = await ApiService.getDemandesTraitees();
+      const response = await ApiService.getDemandesNonTraitees();
 
       if (response.status === 200 && response.demandes && Array.isArray(response.demandes)) {
         setDemandes(response.demandes);
       } else {
-        setMessage("Erreur lors du chargement des demandes traitées.");
+        setMessage("Erreur lors du chargement des demandes non traitées.");
       }
     } catch (error) {
       console.error("Erreur API :", error);
@@ -31,7 +31,7 @@ const DemandesTraiteesPage = () => {
   return (
     <Layout>
       <div className="container mt-4" style={{ maxWidth: "950px" }}>
-        <h2 className="mb-4 text-center">Demandes d'achat traitées</h2>
+        <h2 className="mb-4 text-center">Demandes d'achat non traitées</h2>
 
         {message && (
           <div className="alert alert-danger text-center">{message}</div>
@@ -40,7 +40,7 @@ const DemandesTraiteesPage = () => {
         {loading ? (
           <div className="text-center">Chargement...</div>
         ) : demandes.length === 0 ? (
-          <div className="text-center">Aucune demande traitée trouvée.</div>
+          <div className="text-center">Aucune demande non traitée trouvée.</div>
         ) : (
           <table className="table table-striped table-bordered">
             <thead className="table-light">
@@ -68,4 +68,4 @@ const DemandesTraiteesPage = () => {
   );
 };
 
-export default DemandesTraiteesPage;
+export default DemandesNonTraiteesPage;

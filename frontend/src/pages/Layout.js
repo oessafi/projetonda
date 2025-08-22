@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from '../../assets/logo.png';
-import wave from '../../assets/wave.png';
-import loginBg from '../../assets/loginbg.svg';
+import logo from '../assets/logo.png';
+import wave from '../assets/wave.png';
+import loginBg from '../assets/loginbg.svg';
 import './login.css';
 
 const LoginLayout = ({ children }) => {
