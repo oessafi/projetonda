@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DemandeAchatServiceImpl implements DemandeAchatService {
@@ -31,7 +31,7 @@ public class DemandeAchatServiceImpl implements DemandeAchatService {
                 .description(dto.getDescription())
                 .quantiteDemandee(dto.getQuantiteDemandee())
                 .dateDemande(LocalDateTime.now())
-                .approuvee(false)
+                .traiteeParAcheteur(false) // ✅ initialement non traitée
                 .produit(produit)
                 .build();
 
@@ -43,7 +43,6 @@ public class DemandeAchatServiceImpl implements DemandeAchatService {
                 .build();
     }
 
-    
     @Override
     public Response getAllDemandes() {
         List<DemandeAchatDTO> dtos = demandeAchatRepository.findAll().stream()
@@ -53,11 +52,11 @@ public class DemandeAchatServiceImpl implements DemandeAchatService {
                         .description(d.getDescription())
                         .quantiteDemandee(d.getQuantiteDemandee())
                         .dateDemande(d.getDateDemande())
-                        .approuvee(d.isApprouvee())
+                        .traiteeParAcheteur(d.isTraiteeParAcheteur())
                         .produitId(d.getProduit().getId())
-                        .produitNom(d.getProduit().getname()) // ✅ AJOUTÉ
+                        .produitNom(d.getProduit().getName())
                         .build())
-                .toList();
+                .collect(Collectors.toList());
 
         return Response.builder()
                 .status(200)
@@ -77,7 +76,7 @@ public class DemandeAchatServiceImpl implements DemandeAchatService {
                 .description(d.getDescription())
                 .quantiteDemandee(d.getQuantiteDemandee())
                 .dateDemande(d.getDateDemande())
-                .approuvee(d.isApprouvee())
+                .traiteeParAcheteur(d.isTraiteeParAcheteur())
                 .produitId(d.getProduit().getId())
                 .build();
 
@@ -125,15 +124,71 @@ public class DemandeAchatServiceImpl implements DemandeAchatService {
 
     @Override
     public Response validerDemande(Long demandeId) {
+        return null;
+    }
+
+    @Override
+    public Response traiterDemande(Long demandeId) {
+        return null;
+    }
+
+    @Override
+    public Response traiterDemandeParAcheteur(Long demandeId) {
         DemandeAchat demande = demandeAchatRepository.findById(demandeId)
                 .orElseThrow(() -> new NotFoundException("Demande non trouvée"));
 
-        demande.setApprouvee(true);
+        demande.setTraiteeParAcheteur(true);
         demandeAchatRepository.save(demande);
 
         return Response.builder()
                 .status(200)
-                .message("Demande approuvée")
+                .message("Demande marquée comme traitée par l'acheteur")
+                .build();
+    }
+
+
+    // ✅ Nouveau : afficher toutes les demandes traitées
+    public Response getDemandesTraitees() {
+        List<DemandeAchatDTO> dtos = demandeAchatRepository.findByTraiteeParAcheteurTrue().stream()
+                .map(d -> DemandeAchatDTO.builder()
+                        .id(d.getId())
+                        .titre(d.getTitre())
+                        .description(d.getDescription())
+                        .quantiteDemandee(d.getQuantiteDemandee())
+                        .dateDemande(d.getDateDemande())
+                        .traiteeParAcheteur(true)
+                        .produitId(d.getProduit().getId())
+                        .produitNom(d.getProduit().getName())
+                        .build())
+                .collect(Collectors.toList());
+
+        return Response.builder()
+                .status(200)
+                .message("Demandes traitées")
+                .demandes(dtos)
+                .build();
+    }
+    public Response getDemandesNonTraitees() {
+        List<DemandeAchatDTO> dtos = demandeAchatRepository.findByTraiteeParAcheteurFalse().stream()
+                .map(d -> DemandeAchatDTO.builder()
+                        .id(d.getId())
+                        .titre(d.getTitre())
+                        .description(d.getDescription())
+                        .quantiteDemandee(d.getQuantiteDemandee())
+                        .dateDemande(d.getDateDemande())
+                        .traiteeParAcheteur(false)
+                        .produitId(d.getProduit().getId())
+                        .produitNom(d.getProduit().getName())
+                        .build())
+                .collect(Collectors.toList());
+
+        return Response.builder()
+                .status(200)
+                .message("Demandes non traitées")
+                .demandes(dtos)
                 .build();
     }
 }
+
+
+

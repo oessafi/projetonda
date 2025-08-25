@@ -8,13 +8,8 @@ import com.phegondev.InventoryMgtSystem.enums.TransactionStatus;
 import com.phegondev.InventoryMgtSystem.enums.TransactionType;
 import com.phegondev.InventoryMgtSystem.exceptions.NameValueRequiredException;
 import com.phegondev.InventoryMgtSystem.exceptions.NotFoundException;
-import com.phegondev.InventoryMgtSystem.models.Product;
-import com.phegondev.InventoryMgtSystem.models.Supplier;
-import com.phegondev.InventoryMgtSystem.models.Transaction;
-import com.phegondev.InventoryMgtSystem.models.User;
-import com.phegondev.InventoryMgtSystem.repositories.ProductRepository;
-import com.phegondev.InventoryMgtSystem.repositories.SupplierRepository;
-import com.phegondev.InventoryMgtSystem.repositories.TransactionRepository;
+import com.phegondev.InventoryMgtSystem.models.*;
+import com.phegondev.InventoryMgtSystem.repositories.*;
 import com.phegondev.InventoryMgtSystem.services.TransactionService;
 import com.phegondev.InventoryMgtSystem.services.UserService;
 import com.phegondev.InventoryMgtSystem.specification.TransactionFilter;
@@ -38,52 +33,54 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
+
     private final TransactionRepository transactionRepository;
     private final ProductRepository productRepository;
     private final SupplierRepository supplierRepository;
+    private final UserRepository userRepository;
+    private final DemandeAchatRepository demandeAchatRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Override
-    public Response purchase(TransactionRequest transactionRequest) {
+    public Response purchase(TransactionRequest request) {
+        Product product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new NotFoundException("Produit non trouvé"));
 
-        Long productId = transactionRequest.getProductId();
-        Long supplierId = transactionRequest.getSupplierId();
-        Integer quantity = transactionRequest.getQuantity();
-
-        if (supplierId == null) throw new NameValueRequiredException("Supplier Id is Required");
-
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product Not Found"));
-
-        Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new NotFoundException("Supplier Not Found"));
 
         User user = userService.getCurrentLoggedInUser();
 
-        //update the stock quantity and re-save
-        product.setStockQuantity(product.getStockQuantity() + quantity);
-        productRepository.save(product);
+        Supplier supplier = supplierRepository.findById(request.getSupplierId())
+                .orElseThrow(() -> new NotFoundException("Fournisseur non trouvé"));
 
-        //create a transaction
+        DemandeAchat demandeAchat = null;
+        if (request.getDemandeAchatId() != null) {
+            demandeAchat = demandeAchatRepository.findById(request.getDemandeAchatId())
+                    .orElseThrow(() -> new NotFoundException("Demande d'achat non trouvée"));
+
+            demandeAchat.setTraiteeParAcheteur(true);
+            demandeAchatRepository.save(demandeAchat);
+        }
+
         Transaction transaction = Transaction.builder()
                 .transactionType(TransactionType.PURCHASE)
                 .status(TransactionStatus.COMPLETED)
                 .product(product)
                 .user(user)
                 .supplier(supplier)
-                .totalProducts(quantity)
-                .totalPrice(product.getPrice().multiply(BigDecimal.valueOf(quantity)))
-                .description(transactionRequest.getDescription())
-                .note(transactionRequest.getNote())
+                .demandeAchat(demandeAchat)
+                .totalProducts(request.getTotalProducts())
+                .totalPrice(request.getTotalPrice())
+                .description(request.getDescription())
+                .note(request.getNote())
                 .build();
 
         transactionRepository.save(transaction);
+
         return Response.builder()
                 .status(200)
-                .message("Purchase Made successfully")
+                .message("Transaction d'achat enregistrée.")
                 .build();
-
     }
 
     @Override
