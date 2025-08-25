@@ -48,5 +48,27 @@ public class DemandeAchatController {
         Response response = demandeAchatService.validerDemande(id);
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/traiter/{id}")
+    public ResponseEntity<?> traiterDemande(@PathVariable Long id) {
+        Response response = demandeAchatService.traiterDemande(id);
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/traitees")
+    public ResponseEntity<Response> getDemandesTraitees() {
+        Response response = demandeAchatService.getDemandesTraitees();
+        return ResponseEntity.ok(response);
+    }
 
+
+    // ✅ Marquer une demande comme traitée par l'acheteur
+    @PutMapping("/traiter-par-acheteur/{id}")
+    public ResponseEntity<Response> traiterParAcheteur(@PathVariable Long id) {
+        Response response = demandeAchatService.traiterDemandeParAcheteur(id);
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/non-traitees")
+    public ResponseEntity<Response> getDemandesNonTraitees() {
+        Response response = demandeAchatService.getDemandesNonTraitees();
+        return ResponseEntity.ok(response);
+    }
 }
