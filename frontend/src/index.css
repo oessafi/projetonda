@@ -21,6 +21,7 @@
 .auth-container h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #008080; /* Bleu mer */
 }
 
 .auth-container form {
@@ -174,6 +175,10 @@ button[type="submit"]:hover {
 
 
 
+/* Règle générale pour tous les titres - BLEU MER */
+h1, h2, h3, h4, h5, h6 {
+  color: #008080 !important; /* Bleu mer pour tous les titres */
+}
 
 
 
@@ -215,7 +220,7 @@ button[type="submit"]:hover {
 }
 
 .category-header h1 {
-  color: #008080;
+  color: #008080; /* Bleu mer */
 }
 
 .add-cat {
@@ -297,6 +302,10 @@ button[type="submit"]:hover {
   margin-left: 10px;
 }
 
+.supplier-header h1 {
+  color: #008080; /* Bleu mer */
+}
+
 .supplier-header button {
   padding: 12px 12px;
   background-color: #008080;
@@ -364,7 +373,7 @@ button[type="submit"]:hover {
 .supplier-form-page h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #008080;
+  color: #008080; /* Bleu mer */
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -441,7 +450,7 @@ button[type="submit"]:hover {
 .product-header h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #008080;
+  color: #008080; /* Bleu mer */
 }
 
 .add-product-btn {
@@ -575,7 +584,7 @@ button[type="submit"]:hover {
 .product-form-page h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #008080;
+  color: #008080; /* Bleu mer */
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -675,7 +684,7 @@ button[type="submit"]:hover {
 .purchase-form-page h1 {
   text-align: center;
   margin-bottom: 20px;
-  color: #008080;
+  color: #008080; /* Bleu mer */
 }
 
 .purchase-form-page .form-group {
@@ -733,6 +742,10 @@ button[type="submit"]:hover {
   margin-bottom: 20px;
 }
 
+.transactions-header h1 {
+  color: #008080; /* Bleu mer */
+}
+
 .transaction-search {
   display: flex;
   gap: 10px;
@@ -786,6 +799,10 @@ button[type="submit"]:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.transaction-details-page h1 {
+  color: #008080; /* Bleu mer */
+}
+
 /* Section card styles */
 .section-card {
   background-color: #ffffff;
@@ -804,7 +821,7 @@ button[type="submit"]:hover {
 .section-card h2 {
   margin-bottom: 15px;
   font-size: 1.8em;
-  color: #374151;
+  color: #008080; /* Bleu mer */
   border-bottom: 2px solid #e5e7eb;
   padding-bottom: 10px;
 }
@@ -1006,7 +1023,7 @@ button:hover {
 
 .profile-card h1 {
   font-size: 2.5rem;
-  color: #008080;
+  color: #008080; /* Bleu mer */
   margin-bottom: 100px;
   animation: fadeIn 1s ease-in-out;
   text-transform: capitalize;
@@ -1083,6 +1100,10 @@ button:hover {
 
 /* DASHBOARD STYLING */
 
+.dashboard-page h1 {
+  color: #008080; /* Bleu mer */
+}
+
 .filter-section {
   display: flex;
   gap: 8px;
@@ -1103,6 +1124,10 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   height: 500px;
+}
+
+.chart-container h2 {
+  color: #008080; /* Bleu mer */
 }
 
 .dashboard-page {
