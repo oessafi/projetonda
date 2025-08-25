@@ -2,6 +2,7 @@ package com.phegondev.InventoryMgtSystem.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.phegondev.InventoryMgtSystem.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,9 @@ public class ProductDTO {
     private String imageUrl;
 
     private LocalDateTime createdAt;
-
+    private ProductType typeProduit;
+    private LocalDateTime dateAmortissement;
+    private Integer stockMin;
+    private Integer stockMax;
 
 }

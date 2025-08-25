@@ -16,7 +16,7 @@ public class DemandeAchatDTO {
     private String description;
     private Integer quantiteDemandee;
     private LocalDateTime dateDemande;
-    private Boolean approuvee;
+    private boolean traiteeParAcheteur;
     private String produitNom;
     private Long produitId;
 }

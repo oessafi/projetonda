@@ -46,4 +46,10 @@ public class Response {
 
     private DemandeAchatDTO demande;
     private List<DemandeAchatDTO> demandes;
+    public static Response success(String message) {
+        return Response.builder()
+                .status(200)
+                .message(message)
+                .build();
+    }
 }
