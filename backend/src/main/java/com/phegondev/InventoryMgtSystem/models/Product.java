@@ -1,5 +1,6 @@
 package com.phegondev.InventoryMgtSystem.models;
 
+import com.phegondev.InventoryMgtSystem.enums.ProductType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -14,36 +15,53 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "products")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Le nom est requis")
     private String name;
 
     @Column(unique = true)
-    @NotBlank(message = "SKU is required")
+    @NotBlank(message = "Le SKU est requis")
     private String sku;
 
-    @Positive(message = "product price must be a positive value")
+    @Positive(message = "Le prix doit être positif")
     private BigDecimal price;
 
-    @Min(value = 0, message = "stock quantity cannot be negative")
+    @Min(value = 0, message = "La quantité ne peut pas être négative")
     private Integer stockQuantity;
 
     private String description;
+
     private LocalDateTime expiryDate;
+
     private String imageUrl;
 
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)  // <-- Ajoute cette annotation ici
+    private ProductType typeProduit;
+
+    // ✅ Nouveau champ : date d’amortissement
+    private LocalDateTime dateAmortissement;
+
+    // ✅ Nouveau champ : stock minimum
+    @Min(value = 0, message = "Le stock minimum ne peut pas être négatif")
+    private Integer stockMin;
+
+    // ✅ Nouveau champ : stock maximum
+    @Min(value = 0, message = "Le stock maximum ne peut pas être négatif")
+    private Integer stockMax;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -60,6 +78,10 @@ public class Product {
                 ", sku='" + sku + '\'' +
                 ", price=" + price +
                 ", stockQuantity=" + stockQuantity +
+                ", stockMin=" + stockMin +
+                ", stockMax=" + stockMax +
+                ", typeProduit='" + typeProduit + '\'' +
+                ", dateAmortissement=" + dateAmortissement +
                 ", description='" + description + '\'' +
                 ", expiryDate=" + expiryDate +
                 ", imageUrl='" + imageUrl + '\'' +
@@ -67,8 +89,11 @@ public class Product {
                 '}';
     }
 
-
     public String getname() {
+        return name;
+    }
+
+    public String getName() {
         return name;
     }
 }

@@ -25,10 +25,13 @@ public class DemandeAchat {
 
     private LocalDateTime dateDemande;
 
-    private boolean approuvee;
+    private boolean traiteeParAcheteur;
+
+    @Column(nullable = false)
+    private boolean approuvee = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "produit_id")
     private Product produit;
-
 
 }

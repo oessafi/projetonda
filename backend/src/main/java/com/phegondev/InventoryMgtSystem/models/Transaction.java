@@ -65,4 +65,8 @@ public class Transaction {
                 ", updateAt=" + updateAt +
                 '}';
     }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "demande_achat_id")
+    private DemandeAchat demandeAchat;
+
 }
