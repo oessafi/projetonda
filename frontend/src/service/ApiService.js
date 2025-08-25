@@ -2,7 +2,7 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 
 export default class ApiService {
-  static BASE_URL = "http://localhost:5050/api";
+  static BASE_URL = "http://localhost:5051/api";
   static ENCRYPTION_KEY = "phegon-dev-inventory";
 
   static encrypt(data) {
@@ -297,6 +297,12 @@ export default class ApiService {
     });
     return response.data;
   }
+static async getDemandesNonTraitees() {
+  const response = await axios.get(`${this.BASE_URL}/demandes/non-traitees`, {
+    headers: this.getHeader(),
+  });
+  return response.data;
+}
 
   static async deleteDemandeAchat(id) {
     const response = await axios.delete(`${this.BASE_URL}/demandes/delete/${id}`, {
@@ -311,6 +317,13 @@ export default class ApiService {
     });
     return response.data;
   }
+  static async getDemandesTraitees() {
+  const response = await axios.get(`${this.BASE_URL}/demandes/traitees`, {
+    headers: this.getHeader(),
+  });
+  return response.data;
+}
+
 
   /** ------------------- AUTH CHECKERS ------------------- */
   static logout() {
